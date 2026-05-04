@@ -305,7 +305,7 @@ LitCount demonstrates that DeFi protocols can be simultaneously **fair**, **exci
 ---
 
 **Links:**
-- GitHub: `https://github.com/yourusername/litcount`
+- GitHub: `https://github.com/33ai-wq/litcount`
 - App: `https://litcount.vercel.app`
 - Network: LitVM Testnet Explorer
 
