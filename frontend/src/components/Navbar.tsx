@@ -45,7 +45,7 @@ export function Navbar() {
             {item.label}
           </a>
         ))}
-        <a href="https://github.com/yourusername/litcount/blob/main/WHITEPAPER.md"
+        <a href="https://github.com/33ai-wq/litcount/blob/main/WHITEPAPER.md"
           target="_blank"
           className="flex items-center gap-1 transition-colors hover:text-white"
           style={{ color: "#60a5fa" }}>

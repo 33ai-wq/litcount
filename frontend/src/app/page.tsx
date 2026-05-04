@@ -70,13 +70,13 @@ export default function Home() {
             and let the protocol work for you. Every round is a step toward financial abundance.
           </p>
           <div className="flex flex-wrap justify-center gap-4 pt-2 text-sm">
-            <a href="https://github.com/yourusername/litcount/blob/main/WHITEPAPER.md"
+            <a href="https://github.com/33ai-wq/litcount/blob/main/WHITEPAPER.md"
               target="_blank"
               className="px-4 py-2 rounded-xl font-medium transition-opacity hover:opacity-80"
               style={{ background: "rgba(34,197,94,0.1)", color: "#22c55e", border: "1px solid rgba(34,197,94,0.2)" }}>
               Read Whitepaper
             </a>
-            <a href="https://github.com/yourusername/litcount" target="_blank"
+            <a href="https://github.com/33ai-wq/litcount" target="_blank"
               className="px-4 py-2 rounded-xl font-medium text-gray-400 hover:text-white transition-colors"
               style={{ border: "1px solid rgba(255,255,255,0.1)" }}>
               GitHub
