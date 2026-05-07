@@ -8,7 +8,6 @@ export function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4"
       style={{ background: "rgba(0,0,0,0.85)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
 
-      {/* Logo */}
       <div className="flex items-center gap-3">
         <div style={{
           width: 38, height: 38, borderRadius: 10,
@@ -32,7 +31,6 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Nav Links */}
       <div className="hidden md:flex items-center gap-7 text-sm font-medium">
         {[
           { label: "Pool", href: "#pool" },
@@ -53,13 +51,41 @@ export function Navbar() {
         </a>
       </div>
 
-      {/* Wallet Button */}
-      <ConnectButton
-        label="Connect Wallet"
-        showBalance={false}
-        chainStatus="icon"
-        accountStatus="avatar"
-      />
+      {/* Force English label via ConnectButton.Custom */}
+      <ConnectButton.Custom>
+        {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
+          const connected = mounted && account && chain;
+          return (
+            <div>
+              {!connected ? (
+                <button
+                  onClick={openConnectModal}
+                  className="px-4 py-2 rounded-xl font-bold text-sm transition-opacity hover:opacity-90"
+                  style={{ background: "linear-gradient(135deg, #22c55e, #16a34a)", color: "#000" }}>
+                  Connect Wallet
+                </button>
+              ) : chain.unsupported ? (
+                <button
+                  onClick={openChainModal}
+                  className="px-4 py-2 rounded-xl font-bold text-sm"
+                  style={{ background: "#ef4444", color: "#fff" }}>
+                  Wrong Network
+                </button>
+              ) : (
+                <button
+                  onClick={openAccountModal}
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium"
+                  style={{ background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", color: "#22c55e" }}>
+                  {account.displayName}
+                  {account.displayBalance && (
+                    <span className="text-gray-400">{account.displayBalance}</span>
+                  )}
+                </button>
+              )}
+            </div>
+          );
+        }}
+      </ConnectButton.Custom>
     </nav>
   );
 }
