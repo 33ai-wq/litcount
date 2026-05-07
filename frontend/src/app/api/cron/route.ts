@@ -1,10 +1,11 @@
-import { createWalletClient, http, publicActions } from "viem";
+import { createPublicClient, createWalletClient, http } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { LITVM_TESTNET } from "@/lib/config";
 import { LITCOUNT_POOL_ABI } from "@/lib/abi";
 
-const POOL_ADDRESS = "0x7903e5B54913Fd67dA541F478b17c8B342C82b83" as const;
+const POOL_ADDRESS = "0x7903e5B54913Fd67dA541F478b17c8B342C82b83" as `0x${string}`;
 const RPC_URL      = "https://liteforge.rpc.caldera.xyz/http";
+const CHAIN        = LITVM_TESTNET as any;
 
 export async function GET(request: Request) {
   const auth = request.headers.get("authorization");
@@ -17,13 +18,19 @@ export async function GET(request: Request) {
       process.env.DEPLOYER_PRIVATE_KEY as `0x${string}`
     );
 
-    const client = createWalletClient({
-      account,
-      chain: LITVM_TESTNET as any,
+    const publicClient = createPublicClient({
+      chain: CHAIN,
       transport: http(RPC_URL),
-    }).extend(publicActions);
+    });
 
-    const status = await client.readContract({
+    const walletClient = createWalletClient({
+      account,
+      chain: CHAIN,
+      transport: http(RPC_URL),
+    });
+
+    // Read pool status
+    const status = await publicClient.readContract({
       address: POOL_ADDRESS,
       abi: LITCOUNT_POOL_ABI,
       functionName: "getPoolStatus",
@@ -33,34 +40,44 @@ export async function GET(request: Request) {
     const inDraw   = Boolean(status[4]);
     const count    = Number(status[1]);
 
+    console.log(`timeLeft=${timeLeft} inDraw=${inDraw} count=${count}`);
+
+    // Pool expired → trigger draw
     if (timeLeft === 0 && !inDraw) {
-      const hash = await client.writeContract({
+      const hash = await walletClient.writeContract({
         address: POOL_ADDRESS,
         abi: LITCOUNT_POOL_ABI,
         functionName: "triggerDrawPhase",
+        chain: CHAIN,
+        account,
       });
       return Response.json({ action: "triggerDrawPhase", participants: count, hash });
     }
 
+    // In draw phase
     if (inDraw) {
-      const drawLeft = await client.readContract({
+      const drawLeft = await publicClient.readContract({
         address: POOL_ADDRESS,
         abi: LITCOUNT_POOL_ABI,
         functionName: "getDrawPhaseTimeLeft",
       }) as bigint;
 
       if (Number(drawLeft) > 0) {
-        const hash = await client.writeContract({
+        const hash = await walletClient.writeContract({
           address: POOL_ADDRESS,
           abi: LITCOUNT_POOL_ABI,
           functionName: "executeDraw",
+          chain: CHAIN,
+          account,
         });
         return Response.json({ action: "executeDraw", participants: count, hash });
       } else {
-        const hash = await client.writeContract({
+        const hash = await walletClient.writeContract({
           address: POOL_ADDRESS,
           abi: LITCOUNT_POOL_ABI,
-          functionName: "forceReset",
+          functionName: "forceReset" as any,
+          chain: CHAIN,
+          account,
         });
         return Response.json({ action: "forceReset", participants: count, hash });
       }
@@ -74,6 +91,7 @@ export async function GET(request: Request) {
     });
 
   } catch (error: any) {
+    console.error("Cron error:", error);
     return Response.json({ error: error.message }, { status: 500 });
   }
 }

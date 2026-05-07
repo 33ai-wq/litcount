@@ -166,3 +166,14 @@ export const ZKLTC_ABI = [
     outputs: [{ name: "", type: "uint256" }],
   },
 ] as const;
+
+// Append to LITCOUNT_POOL_ABI — add forceReset
+export const POOL_EXTRA_ABI = [
+  {
+    name: "forceReset",
+    type: "function",
+    stateMutability: "nonpayable",
+    inputs: [],
+    outputs: [],
+  },
+] as const;
