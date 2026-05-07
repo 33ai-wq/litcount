@@ -16,7 +16,6 @@ export function JoinCard() {
   const { hasJoined, needsApproval, userBalance, hasFaucetCooldown, faucetWait, inDrawPhase, refetch } = usePoolData();
   const [step, setStep] = useState<Step>("idle");
   const [errorMsg, setErrorMsg] = useState("");
-
   const { writeContractAsync } = useWriteContract();
 
   const handleFaucet = async () => {
@@ -74,6 +73,7 @@ export function JoinCard() {
     return `${h}h ${m}m`;
   };
 
+  // NOT CONNECTED
   if (!isConnected) {
     return (
       <div className="card-glow p-8 flex flex-col items-center gap-5 text-center">
@@ -93,7 +93,16 @@ export function JoinCard() {
           <h3 className="font-bold text-white text-lg">Connect Wallet</h3>
           <p className="text-gray-400 text-sm mt-1">Connect to join the LitCount pool</p>
         </div>
-        <ConnectButton label="Connect Wallet" />
+        {/* Force English button */}
+        <ConnectButton.Custom>
+          {({ openConnectModal }) => (
+            <button onClick={openConnectModal}
+              className="px-8 py-3 rounded-xl font-bold text-sm w-full"
+              style={{ background: "linear-gradient(135deg, #22c55e, #16a34a)", color: "#000" }}>
+              Connect Wallet
+            </button>
+          )}
+        </ConnectButton.Custom>
       </div>
     );
   }
@@ -134,18 +143,14 @@ export function JoinCard() {
         <h3 className="font-bold text-white text-lg">Join Pool</h3>
         <p className="text-gray-400 text-sm mt-1">Stake 0.1 $zkLTC · Win or earn rewards</p>
       </div>
-
-      {/* Balance */}
       <div className="flex justify-between items-center text-sm px-4 py-3 rounded-xl"
         style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
         <span className="text-gray-400">Your balance</span>
         <span className="text-white font-medium">{userBalance} $zkLTC</span>
       </div>
-
-      {/* Faucet */}
       <button onClick={handleFaucet}
         disabled={hasFaucetCooldown || step !== "idle"}
-        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-all"
+        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium"
         style={{
           background: hasFaucetCooldown ? "rgba(255,255,255,0.03)" : "rgba(34,197,94,0.08)",
           border: `1px solid ${hasFaucetCooldown ? "rgba(255,255,255,0.06)" : "rgba(34,197,94,0.2)"}`,
@@ -155,15 +160,11 @@ export function JoinCard() {
         <Gift size={14} />
         {hasFaucetCooldown ? `Faucet available in ${formatWait(faucetWait)}` : "Claim 10 $zkLTC from Faucet"}
       </button>
-
-      {/* Stake amount */}
       <div className="flex items-center justify-between px-4 py-3 rounded-xl"
         style={{ background: "rgba(34,197,94,0.05)", border: "1px solid rgba(34,197,94,0.15)" }}>
         <span className="text-gray-300 text-sm">Stake amount</span>
         <span className="font-bold" style={{ color: "#22c55e" }}>0.1 $zkLTC</span>
       </div>
-
-      {/* Expected rewards */}
       <div className="rounded-xl p-4 space-y-2 text-sm"
         style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}>
         <p className="text-gray-500 text-xs uppercase tracking-widest">Expected outcome</p>
@@ -176,8 +177,6 @@ export function JoinCard() {
           <span className="text-white font-medium">20% ÷ participants</span>
         </div>
       </div>
-
-      {/* Error */}
       {step === "error" && (
         <div className="flex items-start gap-2 rounded-xl px-4 py-3 text-sm"
           style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", color: "#f87171" }}>
@@ -185,24 +184,20 @@ export function JoinCard() {
           <span>{errorMsg}</span>
         </div>
       )}
-
-      {/* Action button */}
       {step === "done" ? (
         <button className="w-full py-4 rounded-xl font-bold text-black flex items-center justify-center gap-2"
           style={{ background: "linear-gradient(135deg, #22c55e, #86efac)" }}>
           <CheckCircle size={18} /> Joined Successfully!
         </button>
       ) : needsApproval ? (
-        <button onClick={handleApprove}
-          disabled={step === "approving"}
+        <button onClick={handleApprove} disabled={step === "approving"}
           className="w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2"
           style={{ background: "linear-gradient(135deg, #22c55e, #16a34a)", color: "#000", opacity: step === "approving" ? 0.7 : 1 }}>
           {step === "approving" ? <Loader2 size={18} className="animate-spin" /> : <Zap size={18} />}
           {step === "approving" ? "Approving..." : "Approve $zkLTC"}
         </button>
       ) : (
-        <button onClick={handleJoin}
-          disabled={step === "joining"}
+        <button onClick={handleJoin} disabled={step === "joining"}
           className="w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2"
           style={{ background: "linear-gradient(135deg, #22c55e, #16a34a)", color: "#000", opacity: step === "joining" ? 0.7 : 1 }}>
           {step === "joining" ? <Loader2 size={18} className="animate-spin" /> : <Zap size={18} />}
