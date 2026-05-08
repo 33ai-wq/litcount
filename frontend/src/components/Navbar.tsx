@@ -1,7 +1,7 @@
 "use client";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { Zap } from "lucide-react";
+import { Zap, Wallet } from "lucide-react";
 
 export function Navbar() {
   return (
@@ -51,35 +51,31 @@ export function Navbar() {
         </a>
       </div>
 
-      {/* Force English label via ConnectButton.Custom */}
+      {/* Custom wallet button — always English */}
       <ConnectButton.Custom>
         {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
           const connected = mounted && account && chain;
           return (
             <div>
               {!connected ? (
-                <button
-                  onClick={openConnectModal}
-                  className="px-4 py-2 rounded-xl font-bold text-sm transition-opacity hover:opacity-90"
+                <button onClick={openConnectModal}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-opacity hover:opacity-90"
                   style={{ background: "linear-gradient(135deg, #22c55e, #16a34a)", color: "#000" }}>
+                  <Wallet size={16} />
                   Connect Wallet
                 </button>
               ) : chain.unsupported ? (
-                <button
-                  onClick={openChainModal}
-                  className="px-4 py-2 rounded-xl font-bold text-sm"
+                <button onClick={openChainModal}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm"
                   style={{ background: "#ef4444", color: "#fff" }}>
                   Wrong Network
                 </button>
               ) : (
-                <button
-                  onClick={openAccountModal}
+                <button onClick={openAccountModal}
                   className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium"
                   style={{ background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", color: "#22c55e" }}>
+                  <Wallet size={14} />
                   {account.displayName}
-                  {account.displayBalance && (
-                    <span className="text-gray-400">{account.displayBalance}</span>
-                  )}
                 </button>
               )}
             </div>
