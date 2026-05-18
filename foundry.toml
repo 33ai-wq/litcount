@@ -10,7 +10,7 @@ optimizer_runs = 200
 via_ir = false
 
 [rpc_endpoints]
-litvm_testnet = "https://rpc.litvm-testnet.io"  # Update with actual RPC
+litvm_testnet = "https://liteforge.rpc.caldera.xyz/http"  # Update with actual RPC
 
 [etherscan]
 litvm_testnet = { key = "${ETHERSCAN_API_KEY}", url = "https://explorer.litvm-testnet.io/api" }
