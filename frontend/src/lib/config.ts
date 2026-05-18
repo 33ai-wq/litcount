@@ -1,7 +1,7 @@
 // Contract addresses on LitVM Testnet
 export const CONTRACTS = {
-  zkLTC: "0xfbf1bD97e8511445Cc4FA180A5C3724d94642F8C",
-  LitCountPool: "0x7903e5B54913Fd67dA541F478b17c8B342C82b83",
+  zkLTC: "0x40a7a0C8560492626D9bCA97C1eAf284b953098b",
+  LitCountPool: "0x437F3401e3C45fe385873D3Cf5651D403ECADeE4",
 } as const;
 
 // LitVM LiteForge chain config
