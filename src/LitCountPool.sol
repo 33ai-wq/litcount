@@ -36,6 +36,7 @@ contract LitCountPool is ReentrancyGuard, Ownable, Pausable {
 
     uint256 public currentRound;
     uint256 public roundStartTime;
+    uint256 public roundEndTime;       // timestamp when draw phase started
     bool    public isDrawPhase;        // true = 21-min draw window
     bool    public drawExecuted;       // winner picked for this round?
 
@@ -130,7 +131,7 @@ contract LitCountPool is ReentrancyGuard, Ownable, Pausable {
         );
 
         isDrawPhase  = true;
-        round.endTime = block.timestamp;
+        roundEndTime = block.timestamp;
 
         emit DrawPhaseStarted(currentRound, round.userCount, round.totalPool);
     }
