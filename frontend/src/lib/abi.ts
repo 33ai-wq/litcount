@@ -79,6 +79,21 @@ export const LITCOUNT_POOL_ABI = [
     inputs: [],
     outputs: [{ name: "", type: "uint256" }],
   },
+  {
+    name: "getCurrentRoundInfo",
+    type: "function",
+    stateMutability: "view",
+    inputs: [],
+    outputs: [
+      { name: "id", type: "uint256" },
+      { name: "startTime", type: "uint256" },
+      { name: "userCount", type: "uint256" },
+      { name: "totalPool", type: "uint256" },
+      { name: "inDrawPhase", type: "bool" },
+      { name: "timeUntilDraw", type: "uint256" },
+      { name: "canTriggerDraw", type: "bool" }
+    ],
+  },
   // Write functions
   {
     name: "joinPool",
@@ -96,6 +111,13 @@ export const LITCOUNT_POOL_ABI = [
   },
   {
     name: "executeDraw",
+    type: "function",
+    stateMutability: "nonpayable",
+    inputs: [],
+    outputs: [],
+  },
+  {
+    name: "forceReset",
     type: "function",
     stateMutability: "nonpayable",
     inputs: [],

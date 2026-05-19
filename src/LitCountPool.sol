@@ -193,6 +193,17 @@ contract LitCountPool is ReentrancyGuard, Ownable, Pausable {
         _startNewRound();
     }
 
+    /// @notice Force reset the pool if draw window expired without execution
+    /// @dev Can be called by anyone after draw window ends
+    function forceReset() external nonReentrant whenNotPaused {
+        require(isDrawPhase, "Pool: Not in draw phase");
+        require(block.timestamp >= roundEndTime + DRAW_WINDOW, "Pool: Draw window not expired");
+        
+        isDrawPhase = false;
+        round.startTime = block.timestamp; // reset 21hr timer
+        emit DrawSkipped(currentRound, round.userCount, "Draw window expired without execution");
+    }
+
     // ─────────────────────────────────────────────────
     //  CLAIM STAKER REWARD
     // ─────────────────────────────────────────────────

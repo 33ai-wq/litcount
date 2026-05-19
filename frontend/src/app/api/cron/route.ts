@@ -3,7 +3,7 @@ import { privateKeyToAccount } from "viem/accounts";
 import { LITVM_TESTNET } from "@/lib/config";
 import { LITCOUNT_POOL_ABI } from "@/lib/abi";
 
-const POOL_ADDRESS = "0x437F3401e3C45fe385873D3Cf5651D403ECADeE4" as `0x${string}`;
+const POOL_ADDRESS = "0x7903e5B54913Fd67dA541F478b17c8B342C82b83" as `0x${string}`;
 const RPC_URL      = "https://liteforge.rpc.caldera.xyz/http";
 const CHAIN        = LITVM_TESTNET as any;
 
