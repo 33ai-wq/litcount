@@ -1,5 +1,5 @@
 {
-  "schedules": [
+  "crons": [
     {
       "path": "/api/cron",
       "method": "GET",
