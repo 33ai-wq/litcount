@@ -1,1 +1,9 @@
-{}
+{
+  "schedules": [
+    {
+      "path": "/api/cron",
+      "method": "GET",
+      "schedule": "0 */10 * * *"
+    }
+  ]
+}
