@@ -1,0 +1,13 @@
+{
+  "transactions": [
+    {
+      "rpc": "https://liteforge.rpc.caldera.xyz/http"
+    },
+    {
+      "rpc": "https://liteforge.rpc.caldera.xyz/http"
+    },
+    {
+      "rpc": "https://liteforge.rpc.caldera.xyz/http"
+    }
+  ]
+}
